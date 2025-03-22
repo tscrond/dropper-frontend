@@ -3,17 +3,17 @@
   <footer class="h-1/7 w-full flex items-center justify-between">
 
     <div class="w-1/3 flex justify-start items-center">
-        <Github class="scale-30"></Github>
-        <Linkedin class="scale-40"></Linkedin>
-        <Web class="scale-40"></Web>
+        <Github class="scale-25 sm:scale-30"></Github>
+        <Linkedin class="scale-25 sm:scale-40"></Linkedin>
+        <Web class="scale-25 sm:scale-40"></Web>
     </div>
 
-    <div class="w-1/3 flex justify-center">
-        <p class="text-xl">© Bobak Labs™. All Rights Reserved.</p>
+    <div class="hidden sm:flex w-1/3 justify-center">
+        <p class="sm:text-xl">© Bobak Labs™. All Rights Reserved.</p>
     </div>
 
     <div class="w-1/3 flex justify-end">
-        <Bobak class="scale-50"></Bobak>
+        <Bobak class="scale-30 sm:scale-50"></Bobak>
     </div>
 
   </footer>
@@ -30,6 +30,4 @@ import Bobak from './icons/Bobak.vue';
 #svgs {
   vertical-align: middle;
 }
-
-
 </style>

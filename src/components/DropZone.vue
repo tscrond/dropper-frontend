@@ -1,58 +1,62 @@
 <template>
-    <div :data-active="active"
+  <div
     @dragenter.prevent="setActive"
     @dragover.prevent="setActive"
     @dragleave.prevent="setInactive"
-    @drop.prevent="onDrop">
-        <div class="p-28 border-4 border-dashed rounded-lg"
-                :class="active ? 'border-blue-500 bg-blue-100' : 'border-gray-300 bg-gray-50'">
-                <p v-if="active">Drop files here...</p>
-                <p v-else>Drag & drop files here or click to upload</p>
-        </div>
+    @drop.prevent="onDrop"
+    id="fileLoader"
+    @click="triggerFileInput"
+    class="cursor-pointer transition-all duration-300 ease-in-out hover:bg-blue-200 hover:border-blue-500"
+  >
+    <div
+      class="p-28 border-4 border-dashed rounded-lg transition-all duration-300 ease-in-out"
+      :class="active ? 'bg-blue-100 border-blue-500' : 'bg-gray-50 border-gray-300'"
+    >
+      <p v-if="active">Drop files here...</p>
+      <p v-else>Drag & drop files here or click to upload</p>
     </div>
+  </div>
+
+  <!-- Hidden file input -->
+  <input type="file" ref="fileInput" @change="handleFileChange" style="display: none;" />
 </template>
-    
+
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue';
+import { ref, defineEmits } from 'vue';
 
 const emit = defineEmits(['files-dropped']);
 
 let active = ref(false);
 let inActiveTimeout = null;
 
+const fileInput = ref(null);
+
+// File drop handlers
 function setActive() {
-    active.value = true;
-    clearTimeout(inActiveTimeout);
+  active.value = true;
+  clearTimeout(inActiveTimeout);
 }
 
 function setInactive() {
-    inActiveTimeout = setTimeout(() => {
-        active.value = false
-    }, 50);
+  inActiveTimeout = setTimeout(() => {
+    active.value = false;
+  }, 50);
 }
 
 function onDrop(e) {
-    setInactive();
-    const droppedFiles = [...e.dataTransfer.files];
-    console.log("🔥 DropZone received files:", droppedFiles);  // ✅ Check this
-    emit('files-dropped', droppedFiles);
+  setInactive();
+  const droppedFiles = [...e.dataTransfer.files];
+  emit('files-dropped', droppedFiles); // Emit dropped files
 }
 
-function preventDefaults(e) {
-    e.preventDefault()
+function handleFileChange(event) {
+  const files = event.target.files;
+  if (files.length > 0) {
+    emit('files-dropped', [...files]); // Emit selected files
+  }
 }
 
-const events = ['dragenter', 'dragover', 'dragleave', 'drop']
-
-onMounted(() => {
-    events.forEach((eventName) => {
-        document.body.addEventListener(eventName, preventDefaults)
-    });
-});
-
-onUnmounted(() => {
-    events.forEach((eventName) => {
-        document.body.removeEventListener(eventName, preventDefaults)
-    })
-})
+function triggerFileInput() {
+  fileInput.value.click();
+}
 </script>

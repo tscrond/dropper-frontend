@@ -2,11 +2,11 @@
   <div
     @mouseleave="toggleSidebar"
     :class="[
-      'fixed top-0 right-0 h-full w-1/2 bg-gray-800/40 text-white p-4 shadow-lg transition-transform duration-300 overflow-hidden',
+      'fixed top-0 right-0 h-full w-3/7 bg-gray-800/40 p-4 shadow-lg transition-transform duration-300 overflow-hidden',
       isvisible ? 'translate-x-0' : 'w-0 translate-x-full'
     ]"
   >
-    <h2 class="text-xl mb-4">Uploaded Files</h2>
+    <div class="text-xl">Uploaded Files</div>
 
     <table class="w-full text-sm" v-if="files.length">
       <thead>
@@ -30,27 +30,45 @@
     </table>
 
     <div class="flex justify-center mt-4">
-      <button class="bg-green-500 px-6 py-2 rounded-md">Upload to Server</button>
+      <button @click="uploadToServer" class="bg-green-500 px-6 py-2 rounded-md">Upload to Server</button>
     </div>
   </div>
 </template>
 
 <script setup>
-import useFileList from '@/compositions/file-list';
+import fileUploadService from '@/services/fileupload';
+import { useFileList } from '@/compositions/file-list';
 
-defineProps({
-    isvisible: Boolean,
-    files: Array,
-});
+defineProps(['isvisible']);
 
 const emit = defineEmits(["toggle"]);
 const toggleSidebar = () => emit("toggle");
 
-const { removeFile } = useFileList();
+const { files, removeFile } = useFileList();
 
 function formatSize(bytes) {
   if (bytes < 1024) return bytes + ' B';
   if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
   return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
 }
+
+const uploadToServer = async () => {
+  if (!files.value.length) {
+    console.error('No files to upload');
+    return;
+  }
+
+  try {
+    // Loop through the files and upload them one by one
+    for (const file of files.value) {
+      const response = await fileUploadService.uploadFilesToBackend([file.file]); // Each request only sends one file
+      console.log(`File uploaded successfully: ${file.file.name}`, response);
+    }
+
+    // After all uploads are successful, clear the file list
+    files.value = [];
+  } catch (error) {
+    console.error('Error uploading files:', error);
+  }
+};
 </script>

@@ -7,7 +7,7 @@ function addFiles(newFiles) {
         .map((file) => new UploadableFile(file))
         .filter((file) => !fileExists(file.id));
 
-    files.value = files.value.concat(newUploadableFiles);
+    files.value = [...files.value, ...newUploadableFiles];
 }
 
 function fileExists(otherId) {
@@ -16,7 +16,10 @@ function fileExists(otherId) {
 
 function removeFile(file) {
     const index = files.value.findIndex(f => f.id === file.id);
-    if (index > -1) files.value.splice(index, 1);
+    if (index > -1) {
+        file.url && URL.revokeObjectURL(file.url);
+        files.value.splice(index, 1);
+    }
 }
 
 class UploadableFile {
@@ -28,6 +31,6 @@ class UploadableFile {
     }
 }
 
-export default function useFileList() {
+export const useFileList = () => {
     return { files, addFiles, removeFile };
-}
+};
