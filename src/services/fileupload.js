@@ -1,25 +1,20 @@
 import axios from 'axios';
 
-const backendEndpoint = import.meta.env.VITE_BACKEND_URL;
-console.log(import.meta.env);
-console.log("kurwa",backendEndpoint);
+// const backendEndpoint = import.meta.env.VITE_BACKEND_URL;
+const backendEndpoint = window.CONFIG.BACKEND_ENDPOINT || '__BACKEND_ENDPOINT__';
+console.log("backend config check: ", backendEndpoint);
 
 const uploadFilesToBackend = async (files) => {
   try {
     for (const file of files) {
-      // Create FormData for each file and send it in a separate POST request
       const formData = new FormData();
-      formData.append('file', file); // Append each file to the formData
+      formData.append('file', file);
 
-      console.log("Backend endpoint: ",backendEndpoint);
-      
-      let uploadUrl = `${backendEndpoint}/upload`
+      console.log("Backend endpoint: ", backendEndpoint);
 
-      const response = await axios.post(uploadUrl, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      const uploadUrl = `${backendEndpoint}/upload`;
+
+      const response = await axios.post(uploadUrl, formData); // ✅ No headers override!
 
       console.log(`File uploaded successfully: ${file.name}`, response.data);
     }
