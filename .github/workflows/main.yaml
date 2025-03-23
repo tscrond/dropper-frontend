@@ -1,0 +1,15 @@
+name: Push to registries
+
+on:
+  push:
+    branches: [ "main" ]
+    tags: [ 'v*.*.*' ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    uses: ./.github/workflows/_build.yaml
+    with:
+      image-name-dockerhub: bobaklabs/dropper-frontend
+      image-name-github: tscrond/dropper-frontend
