@@ -10,6 +10,10 @@ on:
 jobs:
   build:
     uses: ./.github/workflows/_build.yaml
+    permissions:
+        contents: read
+        packages: write
+        id-token: write
     with:
       image-name-dockerhub: bobaklabs/dropper-frontend
       image-name-github: tscrond/dropper-frontend
