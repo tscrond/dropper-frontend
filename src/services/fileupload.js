@@ -1,10 +1,19 @@
 import axios from 'axios';
 
 // const backendEndpoint = import.meta.env.VITE_BACKEND_URL;
-const backendEndpoint = window.CONFIG.BACKEND_ENDPOINT || '__BACKEND_ENDPOINT__';
-console.log("backend config check: ", backendEndpoint);
+console.log(import.meta.env);
 
-const uploadFilesToBackend = async (files) => {
+let backendEndpoint = '';
+
+if (import.meta.env.DEV) {
+  backendEndpoint = import.meta.env.VITE_BACKEND_ENDPOINT
+} else {
+  backendEndpoint = window.CONFIG.BACKEND_ENDPOINT || '__BACKEND_ENDPOINT__';
+}
+
+console.log("backend endpoint config check: ", backendEndpoint);
+
+const uploadFilesToBackend = async (files, onProgress = () => {}) => {
   try {
     for (const file of files) {
       const formData = new FormData();
@@ -14,7 +23,12 @@ const uploadFilesToBackend = async (files) => {
 
       const uploadUrl = `${backendEndpoint}/upload`;
 
-      const response = await axios.post(uploadUrl, formData); // ✅ No headers override!
+      return axios.post(uploadUrl, formData, {
+        onUploadProgress: (event) => {
+          const percent = Math.round((event.loaded * 100) / event.total);
+          onProgress(percent);
+        }
+      });
 
       console.log(`File uploaded successfully: ${file.name}`, response.data);
     }

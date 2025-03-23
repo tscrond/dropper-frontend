@@ -13,7 +13,7 @@
     </div>
 
     <div class="w-1/3 flex justify-end">
-        <Bobak class="scale-30 sm:scale-50"></Bobak>
+          <Bobak class="scale-25 sm:scale-40"></Bobak>
     </div>
 
   </footer>
