@@ -3,17 +3,17 @@ import HomeView from '@/views/HomeView.vue'
 import LoginView from '@/views/LoginView.vue'
 import axios from 'axios';
 
-function getCookie(name) {
-  const value = `${document.cookie}`;
-  console.log(value);
-  const parts = value.split(`; ${name}=`);
-  if (parts.length === 2) return parts.pop().split(';').shift();
-  return null;
+let backendEndpoint = '';
+
+if (import.meta.env.DEV) {
+  backendEndpoint = import.meta.env.VITE_BACKEND_ENDPOINT
+} else {
+  backendEndpoint = window.CONFIG.BACKEND_ENDPOINT || '__BACKEND_ENDPOINT__';
 }
 
 async function checkAuth() {
   try {
-    const response = await axios.get('http://localhost:3000/auth/is_valid', {withCredentials: true });
+    const response = await axios.get(`${backendEndpoint}/auth/is_valid`, {withCredentials: true });
     console.log("authenticated: ",response.data.authenticated);
     return response.data.authenticated;
   } catch (e) {

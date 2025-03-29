@@ -16,7 +16,7 @@
                         <p class="text-blue-600 text-sm"><a href="https://auth0.com/intro-to-iam/what-is-oauth-2">Learn more about OAuth2</a></p>
                     </PrivacyModal>
                 </div>
-                <form action="http://localhost:3000/auth/oauth" method="get">
+                <form :action="`${backendUrl}/auth/oauth`" method="get">
                     <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded cursor-pointer hover:bg-blue-400 transition">
                     Sign in with Google
                     </button>
@@ -33,6 +33,14 @@ import { ref } from 'vue';
 import Navbar from '@/components/Navbar.vue';
 import Footer from '@/components/Footer.vue';
 import PrivacyModal from '@/components/PrivacyModal.vue';
+
+const backendUrl = ref('');
+
+if (import.meta.env.DEV) {
+    backendUrl.value = import.meta.env.VITE_BACKEND_ENDPOINT || '';
+} else {
+    backendUrl.value = window.CONFIG?.BACKEND_ENDPOINT || '__BACKEND_ENDPOINT__';
+}
 
 const showModal = ref(false);
 
