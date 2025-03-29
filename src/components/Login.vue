@@ -39,7 +39,7 @@ const backendUrl = ref('');
 if (import.meta.env.DEV) {
     backendUrl.value = import.meta.env.VITE_BACKEND_ENDPOINT || '';
 } else {
-    backendUrl.value = window.CONFIG?.BACKEND_ENDPOINT || '__BACKEND_ENDPOINT__';
+    backendUrl.value = window.CONFIG.BACKEND_ENDPOINT || '__BACKEND_ENDPOINT__';
 }
 
 const showModal = ref(false);
