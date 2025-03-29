@@ -108,15 +108,6 @@ const uploadToServer = async () => {
       file.progress = 100;
     }
 
-    // const uploadPromises = files.value.map(file => {
-    //   file.progress = 0;
-    //   return fileUploadService.uploadFilesToBackend([file,file], (file, percent) => {
-    //     file.progress = percent;
-    //   });
-    // });
-
-    // await Promise.all(uploadPromises);
-
     // After all uploads are successful, clear the file list
     files.value = [];
     return { success: true, message: UPLOAD_SUCCESSFUL };

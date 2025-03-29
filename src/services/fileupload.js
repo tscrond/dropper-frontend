@@ -24,6 +24,7 @@ const uploadFilesToBackend = async (files, onProgress = () => {}) => {
       const uploadUrl = `${backendEndpoint}/upload`;
 
       return axios.post(uploadUrl, formData, {
+        withCredentials: true,
         onUploadProgress: (event) => {
           const percent = Math.round((event.loaded * 100) / event.total);
           onProgress(percent);
