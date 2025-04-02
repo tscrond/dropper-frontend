@@ -35,8 +35,5 @@ export const useAuthStore = defineStore("auth", {
                 console.log('Issues with logout');
             }
         },
-        async getUserData() {
-            
-        },
     }
 })
