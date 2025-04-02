@@ -1,25 +1,13 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '@/views/HomeView.vue'
-import LoginView from '@/views/LoginView.vue'
-import axios from 'axios';
+import { createRouter, createWebHistory } from 'vue-router';
+import { useAuthStore } from '@/stores/auth';
+import { getActivePinia, setActivePinia, createPinia } from "pinia";
 
-let backendEndpoint = '';
+import HomeView from '@/views/HomeView.vue';
+import LoginView from '@/views/LoginView.vue';
 
-if (import.meta.env.DEV) {
-  backendEndpoint = import.meta.env.VITE_BACKEND_ENDPOINT
-} else {
-  backendEndpoint = window.CONFIG.BACKEND_ENDPOINT || '__BACKEND_ENDPOINT__';
-}
-
-async function checkAuth() {
-  try {
-    const response = await axios.get(`${backendEndpoint}/auth/is_valid`, {withCredentials: true });
-    console.log("authenticated: ",response.data.authenticated);
-    return response.data.authenticated;
-  } catch (e) {
-    console.log(e);
-    return false;
-  }
+// Ensure Pinia is active
+if (!getActivePinia()) {
+  setActivePinia(createPinia());
 }
 
 const router = createRouter({
@@ -43,14 +31,11 @@ const router = createRouter({
 
 
 router.beforeEach(async (to, from, next) => {
-  const isAuthenticated = await checkAuth();
-
-  if (to.matched.some(record => record.meta.requiresAuth)) {
-    if (isAuthenticated) {
-      next();
-    } else {
-      next('login');
-    }
+  const authStore = useAuthStore();
+  await authStore.checkAuth();
+  
+  if (to.meta.requiresAuth && !authStore.isAuthenticated) {
+    next("/login");
   } else {
     next();
   }

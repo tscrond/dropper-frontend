@@ -31,7 +31,6 @@ const uploadFilesToBackend = async (files, onProgress = () => {}) => {
         }
       });
 
-      console.log(`File uploaded successfully: ${file.name}`, response.data);
     }
 
     return 'All files uploaded successfully';
