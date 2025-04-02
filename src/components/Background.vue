@@ -1,11 +1,11 @@
 <template>
-    <Flower
-      class="flower-spin w-[500px] h-[500px] opacity-20 ml-[-100px] mt-[-100px]"
-      :style="{
-        animationPlayState: isSpinning ? 'running' : 'paused',
-        transition: isSpinning ? '' : 'transform 1s ease-out'
-      }"
-    />
+  <Flower
+    class="flower-spin w-[500px] h-[500px] opacity-20 ml-[-100px] mt-[-100px]"
+    :style="{
+      animationPlayState: isSpinning ? 'running' : 'paused',
+      transition: isSpinning ? '' : 'transform 1s ease-out'
+    }"
+  />
 </template>
 
 <script setup>
@@ -19,26 +19,19 @@ const props = defineProps({
   }
 });
 </script>
-  
+
 <style scoped>
-@keyframes spin-y {
+@keyframes spin-z {
   from {
-    transform: rotateY(0deg);
+    transform: rotate(0deg);
   }
   to {
-    transform: rotateY(360deg);
+    transform: rotate(360deg);
   }
 }
 
 .flower-spin {
-  animation: spin-y 5s linear infinite;
-  transform-style: preserve-3d;
+  animation: spin-z 5s linear infinite;
   will-change: transform;
 }
-
-.relative {
-  position: relative;
-  perspective: 1000px; /* Adding perspective directly here */
-}
 </style>
-  

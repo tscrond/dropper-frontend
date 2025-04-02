@@ -9,7 +9,7 @@
     class="cursor-pointer transition-all duration-300 ease-in-out hover:bg-blue-200 hover:border-blue-500"
   >
     <div
-      class="p-28 border-4 border-dashed rounded-lg transition-all duration-300 ease-in-out"
+      class="text-center p-28 border-4 border-dashed rounded-lg transition-all duration-300 ease-in-out"
       :class="active ? 'bg-blue-100 border-blue-500' : 'bg-gray-50 border-gray-300'"
     >
       <p v-if="active">Drop files here...</p>
