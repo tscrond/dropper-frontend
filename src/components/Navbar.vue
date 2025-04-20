@@ -5,7 +5,11 @@
 
         <div class="flex flex-row w-full justify-evenly m-1 p-1">
             <div class="flex justify-center items-center w-full h-16 sm:h-16"> 
-                <h1 class="text-2xl sm:text-4xl">Dropper</h1>
+                <button class="text-lg sm:text-xl cursor-pointer hover:text-blue-400">
+                    <a href="/">
+                        <h1 class="text-2xl sm:text-4xl">Dropper</h1>
+                    </a>
+                </button>
             </div>
 
             <div v-if="!authStore.isAuthenticated "class="flex items-center justify-center w-full">
@@ -46,7 +50,7 @@
 
             <div v-if="authStore.isAuthenticated" class="flex justify-center w-full">
                 <button class="w-full text-lg sm:text-xl cursor-pointer hover:text-blue-400">
-                    <a class="flex flex-col justify-center items-center" href="/">
+                    <a class="flex flex-col justify-center items-center" href="/profile">
                         <div>
                             <img :src="userDataStore.profPicture" alt="Circular Image" class="w-8 h-8 sm:w-12 sm:h-12 rounded-full">
                         </div>

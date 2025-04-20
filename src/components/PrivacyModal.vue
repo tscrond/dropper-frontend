@@ -1,17 +1,15 @@
 <template>
   <Teleport to="body">
     <div v-if="isOpen" class="fixed inset-0 flex items-center justify-center bg-black/40">
-      <div class="bg-white p-6 rounded-lg shadow-lg w-96">
-        <div class="flex justify-between items-center mb-4">
+      <div class="flex justify-evenly flex-col bg-white p-6 rounded-lg shadow-lg">
+        <div class="flex justify-between items-center">
           <h2 class="text-lg font-semibold">{{ title }}</h2>
-          <button @click="closeModal" class="text-gray-500 hover:text-gray-800">&times;</button>
-        </div>
-        <slot></slot> <!-- Slot for modal content -->
-        <div class="mt-4 flex justify-end">
-          <button @click="closeModal" class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-400">
-            Close
+          <!-- <button @click="closeModal" class="text-gray-500 hover:text-gray-800">&times;</button> -->
+          <button @click="closeModal" class="text-xl cursor-pointer font-bold text-gray-600 hover:text-black">
+            X
           </button>
         </div>
+        <slot></slot> <!-- Slot for modal content -->
       </div>
     </div>
   </Teleport>

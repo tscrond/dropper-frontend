@@ -21,7 +21,7 @@ const uploadFilesToBackend = async (files, onProgress = () => {}) => {
 
       console.log("Backend endpoint: ", backendEndpoint);
 
-      const uploadUrl = `${backendEndpoint}/upload`;
+      const uploadUrl = `${backendEndpoint}/files/upload`;
 
       return axios.post(uploadUrl, formData, {
         withCredentials: true,
