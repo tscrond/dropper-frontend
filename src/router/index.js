@@ -4,6 +4,7 @@ import { getActivePinia, setActivePinia, createPinia } from "pinia";
 
 import HomeView from '@/views/HomeView.vue';
 import LoginView from '@/views/LoginView.vue';
+import ProfileView from '@/views/ProfileView.vue';
 
 // Ensure Pinia is active
 if (!getActivePinia()) {
@@ -25,6 +26,14 @@ const router = createRouter({
       path: '/login',
       name: 'login',
       component: LoginView,
+    },
+    {
+      path: '/profile',
+      name: 'profile',
+      component: ProfileView,
+      meta: {
+        requiresAuth: true,
+      },
     }
   ],
 })

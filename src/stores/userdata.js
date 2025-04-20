@@ -14,15 +14,19 @@ export const useUserDataStore = defineStore("userdata",{
         userData: null,
     }),
     getters: {
-        profPicture: (state) => state.userData?.picture || null,
+        userId: (state) => state.userData?.id || null,
         userEmail: (state) => state.userData?.email || null,
+        userName: (state) => state.userData?.name || null,
         givenName: (state) => state.userData?.given_name || null,
+        familyName: (state) => state.userData?.family_name || null,
+        profPicture: (state) => state.userData?.picture || null,
+        locale: (state) => state.userData?.locale || null
     },
     actions: {
         async fetchUserData() {
             try {
-                const userDataUrl = `${backendEndpoint}/user_data`;
-                const response = await axios.get(userDataUrl,{ withCredentials: true });
+                const userDataUrl = `${backendEndpoint}/user/data`;
+                const response = await axios.get(userDataUrl, { withCredentials: true });
 
                 if (response.data.user_data) {
                     this.userData = response.data.user_data;
