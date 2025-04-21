@@ -4,7 +4,7 @@ import Profile from '../components/Profile.vue';
 
 
 <template>
-    <main>
+    <main class="h-full">
         <Profile></Profile>
     </main>
 </template>

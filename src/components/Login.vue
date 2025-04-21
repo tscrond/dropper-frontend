@@ -51,14 +51,11 @@ import { ref } from 'vue';
 import Navbar from '@/components/Navbar.vue';
 import Footer from '@/components/Footer.vue';
 import PrivacyModal from '@/components/PrivacyModal.vue';
+import { useConfigStore } from '@/stores/config';
+import { storeToRefs } from 'pinia';
 
-const backendUrl = ref('');
-
-if (import.meta.env.DEV) {
-    backendUrl.value = import.meta.env.VITE_BACKEND_ENDPOINT || '';
-} else {
-    backendUrl.value = window.CONFIG.BACKEND_ENDPOINT || '__BACKEND_ENDPOINT__';
-}
+const configStore = useConfigStore();
+const { backendUrl } = storeToRefs(configStore);
 
 const showModal = ref(false);
 

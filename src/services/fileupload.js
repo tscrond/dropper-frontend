@@ -3,17 +3,13 @@ import axios from 'axios';
 // const backendEndpoint = import.meta.env.VITE_BACKEND_URL;
 console.log(import.meta.env);
 
-let backendEndpoint = '';
+import { useConfigStore } from '@/stores/config';
 
-if (import.meta.env.DEV) {
-  backendEndpoint = import.meta.env.VITE_BACKEND_ENDPOINT
-} else {
-  backendEndpoint = window.CONFIG.BACKEND_ENDPOINT || '__BACKEND_ENDPOINT__';
-}
-
-console.log("backend endpoint config check: ", backendEndpoint);
-
-const uploadFilesToBackend = async (files, onProgress = () => {}) => {
+const uploadFilesToBackend = async (files, onProgress = () => { }) => {
+  const configStore = useConfigStore();
+  const backendEndpoint = configStore.backendUrl;
+  console.log("backend endpoint config check: ", backendEndpoint);
+  
   try {
     for (const file of files) {
       const formData = new FormData();
