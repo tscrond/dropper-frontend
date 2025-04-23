@@ -16,10 +16,14 @@
             <td class="text-center px-2 py-2 sm:px-6 sm:py-4 break-all whitespace-normal max-w-[40px] max-h-[30px] sm:max-w-full sm:max-h-[100px] text-sm font-medium">{{ object.name }}</td>
             <td class="text-center px-2 py-2 sm:px-6 sm:py-4 break-all whitespace-normal max-w-[40px] max-h-[30px] sm:max-w-full sm:max-h-[100px] text-sm hidden md:table-cell">{{ object.content_type }}</td>
             <td class="text-center px-2 py-2 sm:px-6 sm:py-4 break-all whitespace-normal max-w-[40px] max-h-[30px] sm:max-w-full sm:max-h-[100px] text-sm hidden md:table-cell">{{ object.md5 }}</td>
-            <td class="text-center px-2 py-2 sm:px-6 sm:py-4 break-all whitespace-normal max-w-[40px] max-h-[30px] sm:max-w-full sm:max-h-[100px] text-sm hidden md:table-cell">{{ object.size }}</td>
-            <td class="text-center px-2 py-2 sm:px-6 sm:py-4 break-all whitespace-normal max-w-[40px] max-h-[30px] sm:max-w-full sm:max-h-[100px] text-sm hidden md:table-cell">{{ object.date_created }}</td>
+            <td class="text-center px-2 py-2 sm:px-6 sm:py-4 break-all whitespace-normal max-w-[40px] max-h-[30px] sm:max-w-full sm:max-h-[100px] text-sm hidden md:table-cell">{{ formatSize(object.size) }}</td>
+            <td class="text-center px-2 py-2 sm:px-6 sm:py-4 break-all whitespace-normal max-w-[40px] max-h-[30px] sm:max-w-full sm:max-h-[100px] text-sm hidden md:table-cell">{{ formatDateToShortString(object.date_created) }}</td>
             <td class="text-center px-2 py-2 sm:px-6 sm:py-4 break-all whitespace-normal max-w-[40px] max-h-[30px] sm:max-w-full sm:max-h-[100px] text-sm">
-                <button type="button" class="
+                <a type="button" 
+                v-if="fileLinks[object.name]"
+                :href="`${fileLinks[object.name]}`"
+                download
+                class="
                 break-all whitespace-normal
                 max-w-[40px] max-h-[30px] sm:max-w-full sm:max-h-[100px] 
                 inline-flex 
@@ -36,8 +40,9 @@
                 focus:text-blue-800 
                 disabled:opacity-50 
                 cursor-pointer">
-                    Download 
-                 </button>
+                    Download
+                </a>
+                <span v-else class="text-gray-400">Loading...</span>
             </td>
             <td class="text-center px-2 py-2 sm:px-6 sm:py-4 break-all whitespace-normal max-w-[40px] max-h-[30px] sm:max-w-full sm:max-h-[100px] text-sm font-medium">
                 <button type="button" class="
@@ -66,10 +71,51 @@
 
 
 <script setup>
-defineProps({
-    objectsList: {
-        type: Array,
-        required: true,
-    },
+import { ref, watch } from 'vue';
+import { usePrivateLinkStore } from '@/stores/privatelink';
+import { useConfigStore } from '@/stores/config';
+import { storeToRefs } from 'pinia';
+import { formatSize,formatDateToShortString } from '@/utils/helpers'
+
+// Stores
+const configStore = useConfigStore();
+const privateLinkStore = usePrivateLinkStore();
+const { backendUrl } = storeToRefs(configStore);
+
+// Props
+const props = defineProps({
+  objectsList: {
+    type: Array,
+    required: true,
+  },
 });
+
+// Reactive fileLinks
+const fileLinks = ref({});
+
+console.log("filelinks: ",fileLinks);
+
+// Fetch private links for all files
+async function fetchLinksForAllFiles() {
+  fileLinks.value = {}; // Reset
+
+  const fetchPromises = props.objectsList.map( async (object) => {
+    try {
+      await privateLinkStore.fetchPrivateLink(object.name);
+      const token = privateLinkStore.getPrivateLink(object.name); // This should now be specific per file
+      console.log(`Token for ${object.name}:`, token);
+      fileLinks.value[object.name] = `${backendUrl.value}/d/private/${token}`;
+    } catch (e) {
+      console.error(`Error fetching for ${object.name}:`, e);
+      fileLinks.value[object.name] = null;
+    }
+  })
+
+  await Promise.all(fetchPromises);
+
+  console.log("Final fileLinks.value:", fileLinks.value);
+}
+
+// Watch for prop changes
+watch(() => props.objectsList, fetchLinksForAllFiles, { immediate: true });
 </script>

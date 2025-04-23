@@ -38,6 +38,10 @@ const { sharedObjectsList } = storeToRefs(sharedStore)
 onMounted(() => {
   bucketStore.fetchBucketDataFromUser()
   sharedStore.fetchSharedDataForUser()
+  
+  setInterval(() => {
+    sharedStore.fetchSharedDataForUser()
+  },10000)
 //   console.log("bucket objects list: ",objectsList)
   console.log("shared objects list: ",sharedObjectsList)
 })
