@@ -40,10 +40,20 @@
 </template>
 
 <script setup>
+import axios from 'axios';
+import { storeToRefs } from 'pinia';
 import { onMounted } from 'vue';
 import { useUserDataStore } from '@/stores/userdata';
+import { useConfigStore } from '@/stores/config';
+import { useRouter } from 'vue-router';
+import { useAuthStore } from "@/stores/auth";
+
+const configStore = useConfigStore();
+const { backendUrl } = storeToRefs(configStore);
 
 const userDataStore = useUserDataStore();
+
+const authStore = useAuthStore();
 
 onMounted(async () => {
     await userDataStore.fetchUserData();
@@ -62,5 +72,23 @@ const userFields = [
   { label: 'Locale', key: 'locale' },
 ];
 
+const router = useRouter();
+
+async function deleteAccount() {
+    const deleteAccountUrl = `${backendUrl.value}/user/account/delete`;
+
+    try {
+        const response = axios.delete(deleteAccountUrl,{
+            withCredentials: true
+        });
+
+        console.log("Account deleted successfully!", response.data);
+
+        authStore.logout(router);
+
+    } catch (error) {
+        console.error("failed to delete account: ", error);
+    }
+}
 
 </script>
