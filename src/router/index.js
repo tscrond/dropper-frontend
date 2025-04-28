@@ -1,10 +1,11 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import { useAuthStore } from '@/stores/auth';
 import { getActivePinia, setActivePinia, createPinia } from "pinia";
 
 import HomeView from '@/views/HomeView.vue';
 import LoginView from '@/views/LoginView.vue';
 import ProfileView from '@/views/ProfileView.vue';
+import BucketView from '@/views/BucketView.vue';
+import ShareView from '@/components/Share.vue';
 
 // Ensure Pinia is active
 if (!getActivePinia()) {
@@ -34,12 +35,29 @@ const router = createRouter({
       meta: {
         requiresAuth: true,
       },
+    },
+    {
+      path: '/share',
+      name: 'share',
+      component: ShareView,
+      meta: {
+        requiresAuth: true,
+      },
+    },
+    {
+      path: '/bucket',
+      name: 'bucket',
+      component: BucketView,
+      meta: {
+        requiresAuth: true,
+      },
     }
   ],
 })
 
 
 router.beforeEach(async (to, from, next) => {
+  const { useAuthStore } = await import('@/stores/auth')
   const authStore = useAuthStore();
   await authStore.checkAuth();
   

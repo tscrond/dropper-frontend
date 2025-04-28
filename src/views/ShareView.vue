@@ -1,10 +1,10 @@
 <script setup>
-import Profile from '../components/Profile.vue';
+import Share from '../components/Share.vue';
 </script>
 
 
 <template>
     <main class="h-full">
-        <Profile></Profile>
+        <Share></Share>
     </main>
 </template>

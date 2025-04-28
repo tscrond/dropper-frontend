@@ -1,13 +1,6 @@
 import { defineStore } from "pinia";
 import axios from "axios";
-
-let backendEndpoint = '';
-
-if (import.meta.env.DEV) {
-    backendEndpoint = import.meta.env.VITE_BACKEND_ENDPOINT || '';
-} else {
-    backendEndpoint = window.CONFIG.BACKEND_ENDPOINT || '__BACKEND_ENDPOINT__';
-}
+import { useConfigStore } from "./config";
 
 export const useUserDataStore = defineStore("userdata",{
     state: () => ({
@@ -24,6 +17,9 @@ export const useUserDataStore = defineStore("userdata",{
     },
     actions: {
         async fetchUserData() {
+            const configStore = useConfigStore();
+            const backendEndpoint = configStore.backendUrl;
+
             try {
                 const userDataUrl = `${backendEndpoint}/user/data`;
                 const response = await axios.get(userDataUrl, { withCredentials: true });

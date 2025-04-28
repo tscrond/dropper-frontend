@@ -1,26 +1,17 @@
 <template>
 
-    <!-- Navbar -->
-    <!-- <Navbar/> -->
-
-    <!-- Main Content Area -->
-    <div class="flex-1 p-4">
-       <div class="text-xl flex items-center justify-around h-full">
+<div class="w-full h-full p-4">
+    <div class="flex flex-col justify-center items-center h-full">
+      <div class="text-xl flex items-center justify-around w-full">
         <Background class="hidden sm:flex" :isSpinning="sidebarVisible" />
-        <Background class="hidden sm:flex" :isSpinning="sidebarVisible" />
-        <DropZone @files-dropped="addFilesAndShowSidebar"></DropZone>
-        <Background class="hidden sm:flex" :isSpinning="sidebarVisible" />
+        <DropZone @files-dropped="addFilesAndShowSidebar" />
         <Background class="hidden sm:flex" :isSpinning="sidebarVisible" />
       </div>
     </div>
 
-    <!-- Footer -->
-    <!-- <Footer></Footer> -->
-
-    <!-- Sidebar -->
-    <SidebarToggle :isvisible="sidebarVisible" @toggle="toggleSidebar"></SidebarToggle>
-    <Sidebar :isvisible="sidebarVisible" :files="files" @toggle="toggleSidebar"></Sidebar>
-    
+    <SidebarToggle :isvisible="sidebarVisible" @toggle="toggleSidebar" />
+    <Sidebar :isvisible="sidebarVisible" :files="files" @toggle="toggleSidebar" />
+  </div>
 
 </template>
 

@@ -7,9 +7,9 @@ import Footer from '@/components/Footer.vue';
 </script>
 
 <template>
-  <div class="h-screen flex flex-col overflow-hidden">
+  <div class="h-screen flex flex-col">
     <Navbar  />
-    <main class="flex-grow flex items-center justify-center">
+    <main class="flex-grow overflow-y-auto overflow-x-hidden">
       <RouterView />
     </main>
     <Footer />
