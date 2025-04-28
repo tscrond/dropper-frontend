@@ -5,6 +5,7 @@ import { useConfigStore } from '@/stores/config';
 export const useSharedDataStore = defineStore('shared', {
     state: () => ({
         sharedObjectsList: [],
+        sharedObjectsByUserList: [],
         loading: false,
         error: null,
     }),
@@ -20,12 +21,30 @@ export const useSharedDataStore = defineStore('shared', {
                 const response = await axios.get(`${backendEndpoint}/files/received`,{
                     withCredentials: true
                 })
-                // this.sharedData = response.data.files
-                this.sharedObjectsList = response.data.files // ✅ directly set here
+                this.sharedObjectsList = response.data?.files || [];
             } catch (err) {
                 this.error = err.response?.data?.message || err.message || 'Fetch error'
             } finally {
                 this.loading = false
+            }
+        },
+        async fetchSharedDataByUser() {
+            const configStore = useConfigStore();
+            const backendEndpoint = configStore.backendUrl;
+
+            this.loading = true;
+            this.error = null;
+            
+            try {
+                const response = await axios.get(`${backendEndpoint}/files/shared_by_user`, {
+                    withCredentials: true
+                });
+                this.sharedObjectsByUserList = response.data.files;
+                console.log(response.data.files);
+            } catch (err) {
+                this.error = err.response?.data?.message || err.message || 'Fetch Error';                
+            } finally {
+                this.loading = false;
             }
         }
     }

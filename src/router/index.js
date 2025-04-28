@@ -5,6 +5,7 @@ import HomeView from '@/views/HomeView.vue';
 import LoginView from '@/views/LoginView.vue';
 import ProfileView from '@/views/ProfileView.vue';
 import BucketView from '@/views/BucketView.vue';
+import ShareView from '@/components/Share.vue';
 
 // Ensure Pinia is active
 if (!getActivePinia()) {
@@ -31,6 +32,14 @@ const router = createRouter({
       path: '/profile',
       name: 'profile',
       component: ProfileView,
+      meta: {
+        requiresAuth: true,
+      },
+    },
+    {
+      path: '/share',
+      name: 'share',
+      component: ShareView,
       meta: {
         requiresAuth: true,
       },

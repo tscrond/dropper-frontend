@@ -37,7 +37,7 @@
             </div>
 
             <div v-if="authStore.isAuthenticated" class="flex items-center justify-center w-full">
-                <button @click="logout" class="text-lg sm:text-xl cursor-pointer hover:text-blue-400 hover:text-2xl transition-all duration-300">Log out</button>
+                <button @click="logout" class="text-[15px] sm:text-xl cursor-pointer hover:text-blue-400 hover:text-2xl transition-all duration-300">Log out</button>
             </div>
 
             <div v-if="authStore.isAuthenticated" class="flex items-center justify-center w-full">
@@ -49,7 +49,7 @@
             </div>
 
             <div v-if="authStore.isAuthenticated" class="flex items-center justify-center w-full">
-                <button class="text-[15px] sm:text-xl cursor-pointer hover:text-blue-400 hover:text-2xl transition-all duration-300"><a href="/">Share</a></button>
+                <button class="text-[15px] sm:text-xl cursor-pointer hover:text-blue-400 hover:text-2xl transition-all duration-300"><a href="/share">Share</a></button>
             </div>
 
             <div v-if="authStore.isAuthenticated" class="flex justify-center w-full">

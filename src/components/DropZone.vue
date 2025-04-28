@@ -12,8 +12,10 @@
       class="text-center p-28 border-4 border-dashed rounded-lg transition-all duration-300 ease-in-out"
       :class="active ? 'bg-blue-100 border-blue-500' : 'bg-gray-50 border-gray-300'"
     >
-      <p v-if="active">Drop files here...</p>
-      <p v-else>Drag & drop files here or click to upload</p>
+      <div class="flex justify-center items-center w-16 h-16 sm:w-64 sm:h-24">
+        <p v-if="active">Drop files here...</p>
+        <p v-else>Drag & drop or click to upload</p>
+      </div>
     </div>
   </div>
 
