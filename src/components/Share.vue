@@ -32,7 +32,7 @@
             </div>
 
             <div class="sm:flex flex-col sm:flex-row sm:justify-evenly items-center justify-around h-full w-full overflow-y-scroll sm:visible">
-                <h1 class="flex justify-center overline py-2 text-3xl">Files You Shared</h1>
+                <h1 class="flex justify-center overline py-2 text-3xl">Shared By Me</h1>
                 <div class="flex h-full overflow-y-auto shadow p-2">
                     <SharedByMe :sharedObjectsList="sharedObjectsByUserList" />
                 </div>

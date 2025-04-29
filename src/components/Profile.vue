@@ -31,7 +31,7 @@
         <div class="flex justify-center items-center w-full h-full">
             <div class="flex text-sm cursor-pointer justify-center items-center bg-red-400 border-2 w-1/5 my-4 py-4 rounded-lg hover:bg-red-300">
                 <button @click="deleteAccount">
-                    Delete Account (unimplemented)
+                    Delete Account
                 </button>
             </div>
         </div>
