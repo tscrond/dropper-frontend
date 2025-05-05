@@ -1,5 +1,5 @@
 <script setup>
-import YourBucket from '../components/YourBucket.vue';
+import YourBucket from '@/components/MyBucket.vue';
 </script>
 
 

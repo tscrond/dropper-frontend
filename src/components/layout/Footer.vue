@@ -20,10 +20,10 @@
 </template>
 
 <script setup>
-import Github from './icons/Github.vue';
-import Linkedin from './icons/Linkedin.vue';
-import Web from './icons/Web.vue';
-import Bobak from './icons/Bobak.vue';
+import Github from '@/components/icons/Github.vue';
+import Linkedin from '@/components/icons/Linkedin.vue';
+import Web from '@/components/icons/Web.vue';
+import Bobak from '@/components/icons/Bobak.vue';
 </script>
 
 <style>

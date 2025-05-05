@@ -18,12 +18,12 @@
 <script setup>
 import { ref } from 'vue';
 import { useFileList } from '@/compositions/file-list';
-import Background from '@/components/Background.vue';
-import DropZone from './DropZone.vue';
-import Navbar from './Navbar.vue';
-import Footer from './Footer.vue';
-import SidebarToggle from './SidebarToggle.vue';
-import Sidebar from './Sidebar.vue';
+import Background from '@/components/layout/Background.vue';
+import DropZone from '@/components/upload/DropZone.vue';
+import Navbar from '@/components/layout/Navbar.vue';
+import Footer from '@/components/layout/Footer.vue';
+import SidebarToggle from '@/components/upload/SidebarToggle.vue';
+import Sidebar from '@/components/upload/Sidebar.vue';
 import fileUploadService from '@/services/fileupload';
 
 const { files, addFiles } = useFileList();

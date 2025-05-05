@@ -46,19 +46,20 @@
 <script setup>
 import { ref } from 'vue';
 import { onMounted } from 'vue';
-import { useSharedDataStore } from '@/stores/shared';
 import { storeToRefs } from 'pinia';
+import axios from 'axios';
+
+import { useSharedDataStore } from '@/stores/shared';
 import { useBucketDataStore } from '@/stores/bucket';
 import { useConfigStore } from '@/stores/config';
+import SharedByMe from '@/components/sharing/SharedByMe.vue';
 
-import axios from 'axios';
 import InputText from 'primevue/inputtext';
 import InputNumber from 'primevue/inputnumber';
 import MultiSelect from 'primevue/multiselect';
 import FloatLabel from 'primevue/floatlabel';
 import Select from 'primevue/select';
 import Button from 'primevue/button';
-import SharedByMe from './SharedByMe.vue';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import ColumnGroup from 'primevue/columngroup';
