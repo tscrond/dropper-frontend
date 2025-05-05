@@ -48,9 +48,9 @@
 
 <script setup>
 import { ref } from 'vue';
-import Navbar from '@/components/Navbar.vue';
-import Footer from '@/components/Footer.vue';
-import PrivacyModal from '@/components/PrivacyModal.vue';
+import Navbar from '@/components/layout/Navbar.vue';
+import Footer from '@/components/layout/Footer.vue';
+import PrivacyModal from '@/components/login/PrivacyModal.vue';
 import { useConfigStore } from '@/stores/config';
 import { storeToRefs } from 'pinia';
 

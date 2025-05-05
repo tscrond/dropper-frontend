@@ -124,7 +124,7 @@ async function fetchLinksForAllFiles() {
 
   await Promise.all(fetchPromises);
 
-  console.log("Final fileLinks.value:", fileLinks.value);
+  // console.log("Final fileLinks.value:", fileLinks.value);
 }
 
 async function deleteObject(objectName) {

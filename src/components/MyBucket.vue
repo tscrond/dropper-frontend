@@ -24,9 +24,9 @@ import { storeToRefs } from 'pinia'
 import { useBucketDataStore } from '@/stores/bucket'
 import { useSharedDataStore } from '@/stores/shared'
 
-import BucketTable from './BucketTable.vue'
-import SharedTable from './SharedForMe.vue'
-import SharedForMe from './SharedForMe.vue'
+import BucketTable from '@/components/bucket/BucketTable.vue'
+import SharedTable from '@/components/sharing/SharedForMe.vue'
+import SharedForMe from '@/components/sharing/SharedForMe.vue'
 
 
 const bucketStore = useBucketDataStore()

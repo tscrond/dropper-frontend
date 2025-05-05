@@ -72,7 +72,8 @@
 import fileUploadService from '@/services/fileupload';
 import { useFileList } from '@/compositions/file-list';
 import { reactive } from 'vue';
-import Popup from '@/components/PopUp.vue';
+import { formatSize } from '@/utils/helpers';
+import Popup from '@/components/layout/PopUp.vue';
 
 const NO_FILES_TO_UPLOAD = 'No files to upload!';
 const UPLOAD_FAILED = 'Upload failed. Please try again.';
@@ -84,12 +85,6 @@ const emit = defineEmits(["toggle"]);
 const toggleSidebar = () => emit("toggle");
 
 const { files, removeFile } = useFileList();
-
-function formatSize(bytes) {
-  if (bytes < 1024) return bytes + ' B';
-  if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
-  return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
-}
 
 const uploadToServer = async () => {
   if (!files.value.length) {
