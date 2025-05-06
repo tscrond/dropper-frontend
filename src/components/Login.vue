@@ -29,7 +29,7 @@
               <!-- This element reacts to hover on the peer -->
               <p class="text-[12px] text-right transition-all duration-300 peer-hover:text-[18px] peer-hover:text-green-500 my-4">
                 <span class="text-xl inline">*</span>
-                Your Google User ID, Google Username, and Email Address
+                Your OAuth2 User ID, Google Username, and Email Address
               </p>
             </span>
           </div>
@@ -38,7 +38,7 @@
       </div>
       <form :action="`${backendUrl}/auth/oauth`" method="get">
         <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded cursor-pointer hover:bg-blue-400 transition">
-          Sign in with Google
+          <p class="pi pi-google"></p> Continue with Google
         </button>
       </form>
     </div>
@@ -53,6 +53,8 @@ import Footer from '@/components/layout/Footer.vue';
 import PrivacyModal from '@/components/login/PrivacyModal.vue';
 import { useConfigStore } from '@/stores/config';
 import { storeToRefs } from 'pinia';
+
+import 'primeicons/primeicons.css'
 
 const configStore = useConfigStore();
 const { backendUrl } = storeToRefs(configStore);

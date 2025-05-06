@@ -51,6 +51,10 @@ const router = createRouter({
       meta: {
         requiresAuth: true,
       },
+    },
+    {
+      path: '/:pathMatch(.*)*',
+      redirect: '/'
     }
   ],
 })

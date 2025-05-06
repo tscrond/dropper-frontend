@@ -18,7 +18,12 @@
                 <td class="text-center px-2 py-2 sm:px-6 sm:py-4 break-all whitespace-normal max-w-[40px] max-h-[30px] sm:max-w-full sm:max-h-[100px] text-sm hidden md:table-cell">{{ object.md5_checksum }}</td>
                 <td class="text-center px-2 py-2 sm:px-6 sm:py-4 break-all whitespace-normal max-w-[40px] max-h-[30px] sm:max-w-full sm:max-h-[100px] text-sm md:table-cell">{{ object.shared_for }}</td>
                 <td class="text-center px-2 py-2 sm:px-6 sm:py-4 break-all whitespace-normal max-w-[40px] max-h-[30px] sm:max-w-full sm:max-h-[100px] text-sm md:table-cell">{{ formatDateToShortString(object.expires_at) }}</td>
-                <td class="text-center px-2 py-2 sm:px-6 sm:py-4 break-all whitespace-normal max-w-[40px] max-h-[30px] sm:max-w-full sm:max-h-[100px] text-sm hidden md:table-cell">{{ isExpired(object.expires_at) ? "Expired" : "Active" }}</td>
+                <td 
+                    class="text-center px-2 py-2 sm:px-6 sm:py-4 break-all whitespace-normal max-w-[40px] max-h-[30px] sm:max-w-full sm:max-h-[100px] text-sm hidden md:table-cell" 
+                    :class="[isExpired(object.expires_at) ? 'text-red-500' : 'text-green-500']"
+                >
+                    {{ isExpired(object.expires_at) ? "Expired" : "Active" }}
+                </td>
             </tr>
         </tbody>
     </table>
