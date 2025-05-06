@@ -1,24 +1,45 @@
 <template>
     <Drawer
-    class="!w-full md:!w-80 lg:!w-[30rem]"
+    class="!w-full sm:!w-[800px]"
     :visible="visible"
     @update:visible="updateVisibility"
-    header="Details & Image Preview"
+    header="Details & Preview"
     >
        <div class="flex flex-col">
-        <!-- Image -->
-        <img v-if="isImage(selectedObject.content_type)" :src="fileLinks[selectedObject.name]" alt="Image" />
+            <!-- Image -->
+            <img class="border-4 border-dotted" v-if="isImage(selectedObject.content_type)" :src="fileLinks[selectedObject.name]" alt="Image" />
 
-        <!-- Video -->
-        <video v-else-if="isVideo(selectedObject.content_type)" controls>
-          <source :src="fileLinks[selectedObject.name]" :type="selectedObject.content_type" />
-          Your browser does not support the video tag.
-        </video>
+            <!-- Video -->
+            <video class="border-4 border-dotted" v-else-if="isVideo(selectedObject.content_type)" controls>
+            <source :src="fileLinks[selectedObject.name]" :type="selectedObject.content_type" />
+            Your browser does not support the video tag.
+            </video>
 
-        <!-- Unsupported -->
-        <div v-else>
-          <p>Format {{ selectedObject.content_type }} is not available for preview.</p>
-        </div>
+
+            <!-- PDF -->
+            <iframe
+                v-else-if="isPdf(selectedObject.content_type)"
+                :src="fileLinks[selectedObject.name]"
+                class="w-full h-[600px] border"
+            ></iframe>
+
+            <!-- Audio -->
+            <audio
+                v-else-if="isAudio(selectedObject.content_type)"
+                controls
+                class="w-full border-4 border-dotted"
+            >
+                <source
+                :src="fileLinks[selectedObject.name]"
+                :type="selectedObject.content_type"
+                />
+                Your browser does not support the audio element.
+            </audio>
+
+            <!-- Unsupported -->
+            <div v-else class="border-4 border-dotted">
+            <p>Format {{ selectedObject.content_type }} is not available for preview.</p>
+            </div>
 
         <Button
             v-if="fileLinks[selectedObject.name]"
@@ -38,7 +59,8 @@
                 focus:outline-hidden 
                 focus:text-blue-800 
                 disabled:opacity-50 
-                cursor-pointer"
+                cursor-pointer
+                my-4"
                 >
                 Download this file
         </Button>
@@ -95,6 +117,7 @@ import Column from 'primevue/column';
 import ColumnGroup from 'primevue/columngroup';
 import Row from 'primevue/row';   
 import Editor from 'primevue/editor';
+import Message from 'primevue/message';
 
 const props = defineProps({
    selectedObject: null,
@@ -117,6 +140,14 @@ function isImage(mimeType) {
 
 function isVideo(mimeType) {
   return mimeType.startsWith('video/');
+}
+
+function isAudio(mimeType) {
+    return mimeType.startsWith('audio/');
+}
+
+function isPdf(type) {
+  return type === 'application/pdf';
 }
 
 function downloadFile(fileLink) {
