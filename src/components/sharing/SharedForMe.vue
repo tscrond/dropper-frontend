@@ -8,7 +8,7 @@
         <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase dark:text-neutral-500 md:table-cell">Shared By</th>
         <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase dark:text-neutral-500 hidden md:table-cell">Expires At</th>
         <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase dark:text-neutral-500 md:table-cell">Status</th>
-        <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">Download link</th>
+        <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">Actions</th>
     </tr>
     </thead>
     <tbody v-for="(object, i) in sharedObjectsList" :key="object.name" class="divide-y divide-neutral-700 overflow-scroll">
@@ -27,7 +27,7 @@
             </td>
 
             <td class="px-2 py-2 sm:px-6 sm:py-4">
-                <div class="flex justify-around items-center">
+                <div class="flex items-center justify-between gap-x-4 w-full">
                     <a
                         :href="`${backendUrl}/d/${object.sharing_token}`"
                         target="_blank"
@@ -71,12 +71,20 @@
                         focus:text-blue-800 
                         disabled:opacity-50 
                         cursor-pointer" 
-                        @click="copyToClipboard(`${backendUrl}/d/${object.sharing_token}`)"
+                        @click="copyToClipboard(fileLinks[object.file_name])"
                     ></button>
+                    <button @click="openPreview(object)" class="pi pi-arrow-up-right-and-arrow-down-left-from-center text-lg text-gray-500 hover:text-gray-700 cursor-pointer" style="font-size: 10px;"></button>
                 </div>
             </td>
         </tr>
     </tbody>
+    <MoreDetailsDrawer
+      v-if="selectedObject"
+      :fileLinks="fileLinks"
+      :selectedObject="convertToBucketTableFormat(selectedObject)"
+      :mode="`shared`"
+      v-model:visible="previewVisible"
+    />
 </table>
 
 <PopUp
@@ -89,16 +97,21 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, watch } from 'vue';  // Make sure to import `watch`
 import { useConfigStore } from '@/stores/config';
 import { storeToRefs } from 'pinia';
 import { formatDateToShortString, isExpired } from '@/utils/helpers';
+
 import PopUp from '@/components/layout/PopUp.vue';
+import MoreDetailsDrawer from '@/components/layout/MoreDetailsDrawer.vue';
+
+const previewVisible = ref(false);
+const selectedObject = ref(null);
 
 const configStore = useConfigStore();
 const { backendUrl } = storeToRefs(configStore);
 
-defineProps({
+const props = defineProps({
     sharedObjectsList: {
         type: Array,
         required: true,
@@ -122,4 +135,49 @@ const copyToClipboard = async (text) => {
     popupVisible.value = true;
 }
 
+function openPreview(object) {
+    selectedObject.value = object;
+    previewVisible.value = true;
+}
+
+const fileLinks = ref({});
+
+const localSharedObjectsList = ref([...props.sharedObjectsList]);
+
+async function fetchLinksForAllFiles() {
+    const links = {};
+
+    for (const object of props.sharedObjectsList) {
+        try {
+            links[object.file_name] = `${backendUrl.value}/d/${object.sharing_token}`;
+        } catch (e) {
+            console.error(`Error constructing file link for ${object.file_name}`, e);
+        }
+    }
+
+    fileLinks.value = links;
+}
+
+function convertToBucketTableFormat(object) {
+    if (!object) return null;
+
+    console.log("baba bobo: ", object);
+
+    return {
+        name: object.file_name,
+        content_type: object.file_type,
+        md5: object.md5_checksum,
+        expires_at: object.expires_at,
+        owner_google_id: object.owner_google_id,
+        shared_by: object.shared_by,
+        shared_for: object.shared_for,
+        sharing_token: object.sharing_token,
+        size: object.size
+    };
+}
+
+watch(() => props.sharedObjectsList, (newList) => {
+  localSharedObjectsList.value = [...newList];
+  fetchLinksForAllFiles();
+}, { immediate: true });
 </script>

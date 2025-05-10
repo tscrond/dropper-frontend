@@ -83,6 +83,7 @@
       :fileLinks="fileLinks"
       :selectedObject="selectedObject"
       v-model:visible="visible"
+      :mode="`private`"
     />
 </table>
 
