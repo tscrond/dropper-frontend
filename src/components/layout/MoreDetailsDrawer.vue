@@ -167,7 +167,7 @@ function isPdf(type) {
 
 function downloadFile(fileLink) {
   const link = document.createElement('a');
-  link.href = fileLink;
+  link.href = `${fileLink}?mode=download`;
   link.download = '';
   link.click();
 }
