@@ -41,12 +41,16 @@
             <p>Format {{ selectedObject.content_type }} is not available for preview.</p>
             </div>
 
+        <div class="flex flex-row items-center justify-around w-full h-full">
         <Button
             v-if="fileLinks[selectedObject.name]"
             @click="downloadFile(`${fileLinks[selectedObject.name]}`)"
             download
             class="
                 break-all whitespace-normal
+                w-2/7
+                h-[50px]
+                sm:h-[50px]
                 inline-flex
                 justify-center
                 items-center
@@ -62,8 +66,77 @@
                 cursor-pointer
                 my-4"
                 >
-                Download this file
+                <p style="font-size: small;" class="pi pi-download"></p>
+                <p class="text-[10px] sm:text-sm">Download this file</p>
         </Button>
+
+        <Button
+            v-if="fileLinks[selectedObject.name]"
+            @click="previewFullScreenFile(`${fileLinks[selectedObject.name]}`)"
+            download
+            severity="info"
+            class="
+                break-all whitespace-normal
+                w-2/7
+                h-[50px]
+                sm:h-[50px]
+                inline-flex
+                justify-center
+                items-center
+                font-semibold 
+                rounded-lg 
+                border 
+                border-transparent 
+                focus:outline-hidden
+                disabled:opacity-50 
+                cursor-pointer
+                my-4"
+                >
+                <p style="font-size: small;" class="pi pi-arrow-up-right-and-arrow-down-left-from-center"></p>
+                <p class="text-[10px] sm:text-sm">Preview fullscreen</p>
+        </Button>
+
+        <Button
+            v-if="mode === 'private'"
+            @click="deleteObject(`${selectedObject.name}`)"
+            download
+            severity="danger"
+            class="
+                break-all whitespace-normal
+                w-2/7
+                h-[50px]
+                sm:h-[50px]
+                inline-flex
+                justify-center
+                items-center
+                font-semibold 
+                rounded-lg 
+                border 
+                border-transparent 
+                text-blue-600 
+                hover:text-blue-800 
+                focus:outline-hidden 
+                focus:text-blue-800 
+                disabled:opacity-50 
+                cursor-pointer
+                my-4"
+                >
+                <p style="font-size: small;" class="pi pi-trash"></p>
+                <p class="text-[10px] sm:text-sm">Delete</p>
+        </Button>
+
+        </div>
+
+        <div class="flex flex-row items-center justify-around w-full h-full">
+          <Button
+            :label="copied ? 'Copied!' : (mode === 'private' ? 'Copy Sharing Link (Private)' : 'Copy Sharing Link')"
+            :icon="copied ? 'pi pi-check' : 'pi pi-copy'"
+            :severity="copied ? 'success' : 'contrast'"
+            variant="outlined"
+            class="w-full px-4"
+            @click="copyLink(`${fileLinks[selectedObject.name]}?mode=inline`)"
+          />
+        </div>
 
         <div>
           <table class="my-4 min-w-full text-sm text-left border">
@@ -110,7 +183,9 @@
                 <Editor v-model="editorContent" name="content" editorStyle="height: 320px" readonly/>
                 <Message v-if="$form.content?.invalid" severity="error" size="small" variant="simple">{{ $form.content.error?.message }}</Message>
             </div>
-            <Button type="submit" severity="info" label="Submit" />
+            <Button class="font-semibold" type="submit" severity="info" label="Submit">
+              <p class="pi pi-check-circle"></p> Submit
+            </Button>
         </Form>
 
       </div>
@@ -118,11 +193,15 @@
 </template>
 
 <script setup>
+import axios from 'axios';
+
 import { ref } from 'vue';
 import { defineEmits } from 'vue';
 import { formatSize,formatDateToShortString } from '@/utils/helpers'
 import { Form } from '@primevue/forms';
 import { Button } from 'primevue';
+import { useConfigStore } from '@/stores/config';
+import { storeToRefs } from 'pinia';
 
 import Drawer from 'primevue/drawer';
 import DataTable from 'primevue/datatable';
@@ -136,12 +215,30 @@ const props = defineProps({
    selectedObject: null,
    fileLinks: null,
    mode: 'private',
+   deleteObject: Function,
    visible: Boolean
 });
+
+const configStore = useConfigStore();
+const { backendUrl } = storeToRefs(configStore);
 
 const editorContent = ref('<h1>Editor for notes feature coming soon!</h1>');
 
 const emit = defineEmits(['update:visible']);
+
+const copied = ref(false);
+
+const copyLink = async (text) => {
+  try {
+    await navigator.clipboard.writeText(text);
+    copied.value = true;
+    setTimeout(() => {
+      copied.value = false;
+    }, 2000);
+  } catch (err) {
+    console.error('Failed to copy: ', err);
+  }
+};
 
 function updateVisibility(value) {
     emit('update:visible', value);
@@ -171,4 +268,17 @@ function downloadFile(fileLink) {
   link.download = '';
   link.click();
 }
+
+function previewFullScreenFile(fileLink) {
+  const link = document.createElement('a');
+  link.href = `${fileLink}?mode=inline`;
+  link.click();
+}
+
 </script>
+
+<style>
+.copy-button {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+</style>

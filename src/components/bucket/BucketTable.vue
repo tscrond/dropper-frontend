@@ -82,6 +82,7 @@
       v-if="selectedObject"
       :fileLinks="fileLinks"
       :selectedObject="selectedObject"
+      :deleteObject="deleteObject"
       v-model:visible="visible"
       :mode="`private`"
     />
@@ -157,6 +158,7 @@ async function fetchLinksForAllFiles() {
 async function deleteObject(objectName) {
   const deleteUrl = `${backendUrl.value}/files/delete`;
   try {
+    visible.value = false;
     const response = await axios.delete(deleteUrl,{
       params: {
         file: objectName
