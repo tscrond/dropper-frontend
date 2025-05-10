@@ -84,15 +84,28 @@
                 <th class="px-4 py-2 font-medium">Size</th>
                 <td class="px-4 py-2">{{ formatSize(selectedObject.size) }}</td>
               </tr>
-              <tr>
+              <tr class="border-b" v-if="selectedObject.date_created">
                 <th class="px-4 py-2 font-medium">Date Created</th>
                 <td class="px-4 py-2">{{ formatDateToShortString(selectedObject.date_created) }}</td>
+              </tr>
+              <tr class="border-b" v-if="selectedObject.shared_by">
+                <th class="px-4 py-2 font-medium">Shared By</th>
+                <td class="px-4 py-2">{{ selectedObject.shared_by }}</td>
+              </tr>
+              <tr class="border-b" v-if="selectedObject.shared_for">
+                <th class="px-4 py-2 font-medium">Shared For</th>
+                <td class="px-4 py-2">{{ selectedObject.shared_for }}</td>
+              </tr>
+              <tr class="border-b" v-if="selectedObject.expires_at">
+                <th class="px-4 py-2 font-medium">Expires At</th>
+                <td class="px-4 py-2">{{ formatDateToShortString(selectedObject.expires_at) }}</td>
               </tr>
             </tbody>
           </table>
         </div>
 
-        <Form v-slot="$form" :resolver="resolver" :initialValues="initialValues" @submit="onFormSubmit" class="flex flex-col gap-4">
+        <!-- <Form v-slot="$form" :resolver="resolver" :initialValues="initialValues" @submit="onFormSubmit" class="flex flex-col gap-4"> -->
+        <Form v-if="mode === 'private'" v-slot="$form" class="flex flex-col gap-4">
             <div class="flex flex-col gap-1">
                 <Editor v-model="editorContent" name="content" editorStyle="height: 320px" readonly/>
                 <Message v-if="$form.content?.invalid" severity="error" size="small" variant="simple">{{ $form.content.error?.message }}</Message>
@@ -122,6 +135,7 @@ import Message from 'primevue/message';
 const props = defineProps({
    selectedObject: null,
    fileLinks: null,
+   mode: 'private',
    visible: Boolean
 });
 
@@ -135,6 +149,7 @@ function updateVisibility(value) {
 
 // File type checks
 function isImage(mimeType) {
+  console.log("mimetype: ",mimeType);
   return mimeType.startsWith('image/');
 }
 
