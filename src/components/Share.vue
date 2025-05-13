@@ -1,47 +1,85 @@
 <template>
-    <div class="flex flex-col w-full h-full overflow-x-auto">
+  <div class="flex flex-col w-full h-full p-6 space-y-10 bg-white text-black">
+    <!-- Title -->
+    <h1 class="text-3xl font-bold text-center">Share Files</h1>
 
-        <div class="h-full w-full">
-            <div class="flex flex-col sm:flex-row sm:justify-evenly items-center justify-around h-full w-full">
-                <p class="text-2xl overline sm:text-2xl">Share the file(s)</p>
-                <div class="flex flex-col sm:flex-col justify-evenly items-center">
-                    <MultiSelect v-model="selectedFiles" :options="objectsList" optionLabel="name" filter placeholder="Select File(s)"
-                    :maxSelectedLabels="3" size="medium" class="w-80 sm:w-full" />
-                    <p class="text-xl sm:text-2xl">to user</p>
+    <!-- File Sharing Form -->
+    <div class="bg-white border border-gray-300 rounded-lg shadow p-6 max-w-3xl mx-auto w-full space-y-6">
+      <!-- File Select -->
+      <div>
+        <label class="block text-base font-medium mb-2">Select File(s)</label>
+        <MultiSelect
+          v-model="selectedFiles"
+          :options="objectsList"
+          optionLabel="name"
+          filter
+          placeholder="Choose files"
+          :maxSelectedLabels="3"
+          class="w-full"
+        />
+      </div>
 
-                    <FloatLabel>
-                        <InputText size="large" id="email" v-model="emailAddress" />
-                        <label for="email">Email</label>
-                    </FloatLabel>
+      <!-- Email Input -->
+      <div>
+        <label class="block text-base font-medium mb-2">Recipient Email</label>
+        <FloatLabel>
+          <InputText id="email" v-model="emailAddress" class="w-full" />
+          <label for="email">Email</label>
+        </FloatLabel>
+      </div>
 
-                    <p class="text-xl sm:text-2xl">for</p>
 
-                    <InputNumber v-model="timeNumber" size="small" showButtons buttonLayout="vertical" class="w-12" :min="0" :max="365">
-                        <template #incrementbuttonicon>
-                            <span class="pi pi-plus" />
-                        </template>
-                        <template #decrementbuttonicon>
-                            <span class="pi pi-minus" />
-                        </template>
-                    </InputNumber>
+    <!-- Time + Duration -->
+    <div>
 
-                    <Select v-model="selectedDuration" size="large" :options="duration" optionLabel="name" placeholder="Select a duration" class="w-full md:w-56" />
-                    <Button label="Share" icon="pi pi-check" iconPos="right" @click="shareFiles" />
-
-                </div>
-            </div>
-
-            <div class="sm:flex flex-col sm:flex-row sm:justify-evenly items-center justify-around h-full w-full overflow-y-scroll sm:visible">
-                <h1 class="flex justify-center overline py-2 text-3xl">Shared By Me</h1>
-                <div class="flex h-full overflow-y-auto shadow p-2">
-                    <SharedByMe :sharedObjectsList="sharedObjectsByUserList" />
-                </div>
-            </div>
+    <label class="block text-base font-medium mb-2">Share Duration</label>
+    <div class="flex flex-row items-center space-x-4">
+        <div class="flex items-center space-x-2">
+        <InputNumber
+            v-model="timeNumber"
+            showButtons
+            buttonLayout="vertical"
+            class="w-20"
+            :min="0"
+            :max="365"
+        >
+            <template #incrementbuttonicon>
+            <span class="pi pi-plus" />
+            </template>
+            <template #decrementbuttonicon>
+            <span class="pi pi-minus" />
+            </template>
+        </InputNumber>
         </div>
-        
+
+        <div class="flex-1">
+        <Select
+            v-model="selectedDuration"
+            :options="duration"
+            optionLabel="name"
+            placeholder="Select duration unit"
+            class="w-full"
+        />
+        </div>
     </div>
 
+    </div>
+      <!-- Share Button -->
+      <div class="text-right">
+        <Button label="Share" icon="pi pi-check" iconPos="right" @click="shareFiles" />
+      </div>
+    </div>
+
+    <!-- Shared Files -->
+    <div class="max-w-5xl mx-auto w-full">
+      <h2 class="text-2xl font-semibold mb-4 text-center">Shared By Me</h2>
+      <div class="border border-gray-200 rounded-md shadow p-4 max-h-96 overflow-y-auto">
+        <SharedByMe :sharedObjectsList="sharedObjectsByUserList" />
+      </div>
+    </div>
+  </div>
 </template>
+
 
 <script setup>
 import { ref } from 'vue';
@@ -114,7 +152,7 @@ async function shareFiles() {
         try {
             const response = await axios.post(
                 shareUrl,
-                {}, // empty body (since you're sending data in query params)
+                {},
                 {
                     withCredentials: true,
                     params: {

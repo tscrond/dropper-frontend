@@ -9,7 +9,7 @@
     >
         <div
             v-if="show"
-            class="fixed bottom-6 left-1/2 transform -translate-x-1/2 text-black px-6 py-3 rounded-lg shadow-lg z-50"
+            class="fixed bottom-25 left-1/2 transform -translate-x-1/2 text-black px-6 py-3 rounded-lg shadow-lg z-50"
             :class="[
                 type === 'error' ? 'bg-red-400' :
                 type === 'info' ? 'bg-blue-400' :
