@@ -13,6 +13,7 @@
     "@primevue/forms": "^4.3.3",
     "@tailwindcss/vite": "^4.0.14",
     "axios": "^1.8.4",
+    "dompurify": "^3.2.5",
     "dotenv": "^16.4.7",
     "jwt-decode": "^4.0.0",
     "pinia": "^3.0.1",

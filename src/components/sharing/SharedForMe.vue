@@ -83,6 +83,7 @@
       :fileLinks="fileLinks"
       :selectedObject="convertToBucketTableFormat(selectedObject)"
       :mode="`shared`"
+      :userId="userId"
       v-model:visible="previewVisible"
     />
 </table>
@@ -115,6 +116,10 @@ const props = defineProps({
     sharedObjectsList: {
         type: Array,
         required: true,
+    },
+    userId: {
+        type: String,
+        required: true
     }
 })
 
@@ -160,8 +165,6 @@ async function fetchLinksForAllFiles() {
 
 function convertToBucketTableFormat(object) {
     if (!object) return null;
-
-    console.log("baba bobo: ", object);
 
     return {
         name: object.file_name,
