@@ -140,38 +140,34 @@ const duration = ref([
 async function shareFiles() {
     const shareUrl = `${backendUrl.value}/files/share`;
 
-    console.log("selected files:", selectedFiles);
-
-    // Ensure selectedFiles is an array before calling map
-    if (!Array.isArray(selectedFiles.value)) {
-        console.error('selectedFiles is not an array');
+    // Validate input
+    if (!Array.isArray(selectedFiles.value) || selectedFiles.value.length === 0) {
+        console.error('No files selected to share');
         return;
     }
 
-    const fetchPromises = selectedFiles.value.map(async (file) => {
-        try {
-            const response = await axios.post(
-                shareUrl,
-                {},
-                {
-                    withCredentials: true,
-                    params: {
-                        email: emailAddress.value,
-                        object: file.name,
-                        duration: `${timeNumber.value}${selectedDuration.value.code}`,
-                    },
-                }
-            );
+    const fileNames = selectedFiles.value.map(file => file.name);
 
-            console.log("response status", file.name, response.status);
-        } catch (e) {
-            console.error(`Error sharing file ${file.name}:`, e.message);
-        }
-    });
+    try {
+        const response = await axios.post(
+            shareUrl,
+            {
+                email: emailAddress.value,
+                objects: fileNames,
+                duration: `${timeNumber.value}${selectedDuration.value.code}`, // e.g. "24h"
+            },
+            {
+                withCredentials: true,
+            }
+        );
 
-    await Promise.all(fetchPromises);
-    sharedStore.fetchSharedDataByUser();
+        console.log("Share response:", response.data);
+    } catch (e) {
+        console.error("Error sharing files:", e.message);
+    }
 
+    // Refresh shared data and clear inputs
+    await sharedStore.fetchSharedDataByUser();
     selectedFiles.value = [];
     emailAddress.value = '';
     timeNumber.value = 0;
