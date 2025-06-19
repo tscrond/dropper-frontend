@@ -127,14 +127,34 @@
 
         </div>
 
-        <div class="flex flex-row items-center justify-around w-full h-full">
-          <Button
-            :label="copied ? 'Copied!' : (mode === 'private' ? 'Copy Sharing Link (Private)' : 'Copy Sharing Link')"
-            :icon="copied ? 'pi pi-check' : 'pi pi-copy'"
-            :severity="copied ? 'success' : 'contrast'"
-            variant="outlined"
-            class="w-full px-4"
-            @click="copyLink(`${fileLinks[selectedObject.name]}?mode=inline`)"
+        <div class="flex flex-col items-center justify-around w-full h-full space-y-2">
+          <div class="flex flex-row w-full space-x-2">
+            <Button
+              :label="copied ? 'Copied!' : 'Copy Sharing Link'"
+              :icon="copied ? 'pi pi-check' : 'pi pi-copy'"
+              :severity="copied ? 'success' : 'contrast'"
+              variant="outlined"
+              class="w-full px-4"
+              @click="copyLinkHandler"
+            />
+            <div class="flex items-center self-center">
+              <Checkbox
+                binary
+                v-model="isPublicLink"
+                :inputId="selectedObject.name"
+                :name="selectedObject.name"
+              />
+              <label :for="selectedObject.name" class="p-2"> Make this link public </label>
+            </div>
+          </div>
+
+          <Select
+            v-if="isPublicLink"
+            v-model="selectedDuration"
+            :options="duration"
+            optionLabel="name"
+            placeholder="Select duration"
+            class="w-full"
           />
         </div>
 
@@ -218,6 +238,8 @@ import ColumnGroup from 'primevue/columngroup';
 import Row from 'primevue/row';   
 import Editor from 'primevue/editor';
 import Message from 'primevue/message';
+import Checkbox from 'primevue/checkbox';
+import Select from 'primevue/select';
 
 import DOMPurify from 'dompurify';
 import PopUp from './PopUp.vue';
@@ -233,8 +255,6 @@ const props = defineProps({
    visible: Boolean,
    userId: String
 });
-
-console.log("user ID: ",props.userId);
 
 // popup vars
 const popupVisible = ref(false);
@@ -284,7 +304,7 @@ async function fetchEditorContent(md5checksum) {
     });
 
     // Sanitize and set the content for the specific file (keyed by md5checksum)
-    const sanitizedContent = DOMPurify.sanitize(response.data.content);
+    const sanitizedContent = DOMPurify.sanitize(response.data.response.content);
     editorContent[md5checksum] = sanitizedContent;
   } catch (error) {
     console.error('Failed to fetch editor content: ', error);
@@ -324,14 +344,13 @@ const submitNotes = async () => {
   } catch (error) {
     console.error('Failed to save notes: ', error);
 
-    if (error.response.status === HttpStatusCode.Forbidden && error.response.data?.response === 'too_many_characters') {
+    if (error.response.status === HttpStatusCode.Forbidden && error.response.data?.response?.msg === 'too_many_characters') {
       popupMessage.value = 'Too Many Characters (max 500)';
       popupType.value = 'warning';
     } else {
       popupMessage.value = 'Failed to save notes';
       popupType.value = 'error';
     }
-
 
   }
   popupVisible.value = true;
@@ -368,6 +387,48 @@ function previewFullScreenFile(fileLink) {
   link.click();
 }
 
+const duration = ref([
+    { name: '30 minutes', code: '30m' },
+    { name: '2 hours', code: '2h' },
+    { name: '1 day', code: '1d' },
+    { name: '1 week', code: '7d' },
+    { name: '1 month', code: '1mo'}
+]);
+
+
+const isPublicLink = ref(false)
+const selectedDuration = ref('24h')
+
+async function copyLinkHandler() {
+  let linkToCopy = ''
+
+  if (isPublicLink.value) {
+    try {
+      const res = await axios.post(`${backendUrl.value}/files/share`, {
+        email: 'unspecified',
+        objects: [props.selectedObject.name],
+        duration: selectedDuration.value.code,
+        send_email: false
+      },
+      { withCredentials: true }
+      )
+      console.log(res)
+      linkToCopy = `${res.data.response.sharing_info[0].sharing_link}?mode=inline`
+      console.log(linkToCopy)
+    } catch (err) {
+      console.error('Failed to generate public link', err)
+      return
+    }
+  } else {
+    linkToCopy = `${props.fileLinks[props.selectedObject.name]}?mode=inline`
+  }
+
+  try {
+    await copyLink(linkToCopy)
+  } catch (error) {
+    console.log('Failed to copy link: ', error)
+  }
+}
 </script>
 
 <style>

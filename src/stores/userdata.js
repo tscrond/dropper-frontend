@@ -24,8 +24,10 @@ export const useUserDataStore = defineStore("userdata",{
                 const userDataUrl = `${backendEndpoint}/user/data`;
                 const response = await axios.get(userDataUrl, { withCredentials: true });
 
-                if (response.data.user_data) {
-                    this.userData = response.data.user_data;
+                console.log(response.data)
+
+                if (response.data.response.user_data) {
+                    this.userData = response.data.response.user_data;
                 } else {
                     this.userData = null;
                 }

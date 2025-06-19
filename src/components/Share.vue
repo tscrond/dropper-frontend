@@ -149,25 +149,26 @@ async function shareFiles() {
     const fileNames = selectedFiles.value.map(file => file.name);
 
     try {
-        const response = await axios.post(
-            shareUrl,
-            {
-                email: emailAddress.value,
-                objects: fileNames,
-                duration: `${timeNumber.value}${selectedDuration.value.code}`, // e.g. "24h"
-            },
-            {
-                withCredentials: true,
-            }
-        );
+      const response = await axios.post(
+          shareUrl,
+          {
+            email: emailAddress.value,
+            objects: fileNames,
+            duration: `${timeNumber.value}${selectedDuration.value.code}`, // e.g. "24h"
+          },
+          {
+            withCredentials: true,
+          }
+      );
 
-        console.log("Share response:", response.data);
+      console.log("Share response:", response.data);
     } catch (e) {
         console.error("Error sharing files:", e.message);
     }
-
+    
     // Refresh shared data and clear inputs
     await sharedStore.fetchSharedDataByUser();
+
     selectedFiles.value = [];
     emailAddress.value = '';
     timeNumber.value = 0;
