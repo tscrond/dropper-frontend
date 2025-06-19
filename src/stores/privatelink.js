@@ -29,9 +29,9 @@ export const usePrivateLinkStore = defineStore('privatelink', {
                     withCredentials: true,
                     params: { file: thisFile },
                 });
-                this.tokens[thisFile] = response.data.private_download_token;
+                this.tokens[thisFile] = response.data.response.private_download_token;
             } catch (err) {
-                this.tokens[thisFile] = response.data.private_download_token;
+                this.tokens[thisFile] = response.data.response.private_download_token;
                 this.error = err.response?.data?.message || err.message || 'Fetch error';
             } finally {
                 this.loading = false;

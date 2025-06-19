@@ -25,9 +25,9 @@ export const useBucketDataStore = defineStore('bucketdata', {
           withCredentials: true,
         })
 
-        this.bucketData = response.data.bucket_data
+        this.bucketData = response.data.response.bucket_data
       } catch (err) {
-        this.error = err.response?.data?.message || err.message || 'Fetch error'
+        this.error = err.response?.data?.response?.msg || err.message || 'Fetch error'
       } finally {
         this.loading = false
       }

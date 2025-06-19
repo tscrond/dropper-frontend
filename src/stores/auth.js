@@ -14,7 +14,7 @@ export const useAuthStore = defineStore("auth", {
         try {
         const checkAuthUrl = `${backendUrl}/auth/is_valid`;
         const response = await axios.get(checkAuthUrl, { withCredentials: true });
-        this.isAuthenticated = response.data.authenticated;
+        this.isAuthenticated = response.data.response.authenticated;
       } catch (error) {
         console.log(error);
         return false;
@@ -28,7 +28,7 @@ export const useAuthStore = defineStore("auth", {
       const logoutUrl = `${backendUrl}/auth/logout`;
       try {
         const response = await axios.post(logoutUrl, {}, { withCredentials: true });
-        if (response.data.logout_successful) {
+        if (response.data.response.logout_successful) {
           this.isAuthenticated = false;
           router.replace("/login");
         } else {
