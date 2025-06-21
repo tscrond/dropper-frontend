@@ -39,7 +39,7 @@
             <!-- Unsupported -->
             <div v-else class="border-4 border-dotted">
             <p>Format {{ selectedObject.content_type }} is not available for preview.</p>
-            </div>
+          </div>
 
         <div class="flex flex-row items-center justify-around w-full h-full">
         <Button
@@ -153,7 +153,7 @@
             v-model="selectedDuration"
             :options="duration"
             optionLabel="name"
-            placeholder="Select duration"
+            :placeholder="`Select duration (default: ${defaultDuration.name})`"
             class="w-full"
           />
         </div>
@@ -395,9 +395,9 @@ const duration = ref([
     { name: '1 month', code: '1mo'}
 ]);
 
-
+const defaultDuration = { name: '1 hour', code: '1h' }
 const isPublicLink = ref(false)
-const selectedDuration = ref('24h')
+const selectedDuration = ref(defaultDuration)
 
 async function copyLinkHandler() {
   let linkToCopy = ''

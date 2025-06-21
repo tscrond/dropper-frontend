@@ -1,10 +1,11 @@
 <template>
   <div class="flex flex-col w-full h-full p-6 space-y-10 bg-white text-black">
+
     <!-- Title -->
     <h1 class="text-3xl font-bold text-center">Share Files</h1>
 
     <!-- File Sharing Form -->
-    <div class="bg-white border border-gray-300 rounded-lg shadow p-6 max-w-3xl mx-auto w-full space-y-6">
+    <div class="shadow p-6 max-w-3xl mx-auto w-full space-y-6 border-4 border-dotted rounded-lg bg-gray-50 border-gray-300">
       <!-- File Select -->
       <div>
         <label class="block text-base font-medium mb-2">Select File(s)</label>
@@ -73,7 +74,7 @@
     <!-- Shared Files -->
     <div class="max-w-5xl mx-auto w-full">
       <h2 class="text-2xl font-semibold mb-4 text-center">Shared By Me</h2>
-      <div class="border border-gray-200 rounded-md shadow p-4 max-h-96 overflow-y-auto">
+      <div class="shadow p-4 max-h-96 overflow-y-auto border-4 border-dotted rounded-lg bg-gray-50 border-gray-300">
         <SharedByMe :sharedObjectsList="sharedObjectsByUserList" />
       </div>
     </div>

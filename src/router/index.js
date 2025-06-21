@@ -6,6 +6,9 @@ import LoginView from '@/views/LoginView.vue';
 import ProfileView from '@/views/ProfileView.vue';
 import BucketView from '@/views/BucketView.vue';
 import ShareView from '@/components/Share.vue';
+import FeatureView from '@/views/FeatureView.vue';
+import AboutView from '@/views/AboutView.vue';
+import TechView from '@/views/TechView.vue';
 
 // Ensure Pinia is active
 if (!getActivePinia()) {
@@ -27,6 +30,21 @@ const router = createRouter({
       path: '/login',
       name: 'login',
       component: LoginView,
+    },
+    {
+      path: '/tech',
+      name: 'technologies',
+      component: TechView,
+    },
+    {
+      path: '/features',
+      name: 'features',
+      component: FeatureView,
+    },
+    {
+      path: '/about',
+      name: 'about',
+      component: AboutView,
     },
     {
       path: '/profile',
