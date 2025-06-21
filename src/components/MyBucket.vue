@@ -4,13 +4,13 @@
         <!-- Table Wrapper 1 -->
         <h1 class="overline py-2 text-3xl mt-16">My Bucket</h1>
 
-        <div class="h-full overflow-y-auto shadow p-2">
+        <div class="h-full overflow-y-auto shadow p-2 border-4 border-dotted rounded-lg bg-gray-50 border-gray-300">
           <BucketTable :userId="`${userDataStore.userId}`" :objectsList="objectsList" />
         </div>
 
         <!-- Table Wrapper 2 -->
         <h1 class="overline py-2 text-3xl mt-32">Shared for Me</h1>
-        <div class="h-full overflow-y-auto shadow p-2">
+        <div class="h-full overflow-y-auto shadow p-2 border-4 border-dotted rounded-lg bg-gray-50 border-gray-300">
             <SharedForMe :userId="`${userDataStore.userId}`" :sharedObjectsList="sharedObjectsList" />
         </div>
     </div>

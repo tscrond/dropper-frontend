@@ -28,11 +28,18 @@
                 </div>
             </div>
         </div>
-        <div class="flex justify-center items-center w-full h-full">
-            <div class="flex text-sm cursor-pointer justify-center items-center bg-red-400 border-2 w-1/5 my-4 py-4 rounded-lg hover:bg-red-300">
-                <button @click="deleteAccount">
-                    Delete Account
-                </button>
+        <div class="flex flex-row justify-center items-center w-full h-full my-8 gap-4">
+            <Button size="large" severity="danger" class="size-lg" @click="deleteAccount">
+                Delete Account
+            </Button>
+            <div class="flex items-center self-center">
+              <Checkbox
+                binary
+                v-model="isDataDeleted"
+                inputId="deleteData"
+                name="delete_data"
+              />
+              <label for="deleteData" class="p-2"> Delete all my data </label>
             </div>
         </div>
     </div>
@@ -41,12 +48,15 @@
 
 <script setup>
 import axios from 'axios';
+import { ref } from 'vue';
 import { storeToRefs } from 'pinia';
 import { onMounted } from 'vue';
 import { useUserDataStore } from '@/stores/userdata';
 import { useConfigStore } from '@/stores/config';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from "@/stores/auth";
+import { Button } from 'primevue';
+import Checkbox from 'primevue/checkbox';
 
 const configStore = useConfigStore();
 const { backendUrl } = storeToRefs(configStore);
@@ -74,20 +84,25 @@ const userFields = [
 
 const router = useRouter();
 
+const isDataDeleted = ref(false)
+
 async function deleteAccount() {
     const deleteAccountUrl = `${backendUrl.value}/user/account/delete`;
 
     try {
-        const response = axios.delete(deleteAccountUrl,{
+        const response = await axios.delete(deleteAccountUrl, {
+            data: {
+                delete_user_data: isDataDeleted.value,  // Make sure you're accessing `.value` from `ref`
+            },
             withCredentials: true
         });
 
-        console.log("Account deleted successfully!", response.data);
+        console.log("Account deleted successfully!", response.data)
 
-        authStore.logout(router);
+        authStore.logout(router)
 
     } catch (error) {
-        console.error("failed to delete account: ", error);
+        console.error("failed to delete account: ", error)
     }
 }
 

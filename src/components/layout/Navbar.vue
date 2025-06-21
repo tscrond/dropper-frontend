@@ -6,7 +6,8 @@
         <div class="flex flex-row w-full justify-evenly m-1 p-1">
             <div class="flex justify-center items-center w-full h-16 sm:h-16"> 
                 <button class="text-[15px] sm:text-xl cursor-pointer hover:text-blue-400 transition-all duration-300">
-                    <a href="/">
+                    <a class="flex justify-center items-center flex-row" href="/">
+                        <img class="hidden sm:inline size-[50px]" src="/freesia.png">
                         <h1 class="text-2xl sm:text-4xl">Dropper</h1>
                     </a>
                 </button>
@@ -20,19 +21,19 @@
 
             <div v-if="!authStore.isAuthenticated "class="flex items-center justify-center w-full">
                 <button class="text-[15px] sm:text-xl cursor-pointer hover:text-blue-400 hover:text-2xl transition-all duration-300">
-                    <a href="https://github.com/bobak-labs">About</a>
+                    <a href="/about">About</a>
                 </button>
             </div>
 
             <div v-if="!authStore.isAuthenticated "class="flex items-center justify-center w-full">
                 <button class="text-[15px] sm:text-xl cursor-pointer hover:text-blue-400 hover:text-2xl transition-all duration-300">
-                    <a href="https://github.com/bobak-labs">Tech</a>
+                    <a href="/tech">Tech</a>
                 </button>
             </div>
 
             <div v-if="!authStore.isAuthenticated "class="flex items-center justify-center w-full">
                 <button class="text-[15px] sm:text-xl cursor-pointer hover:text-blue-400 hover:text-2xl transition-all duration-300">
-                    <a href="https://github.com/bobak-labs">Functionality</a>
+                    <a href="/features">Features</a>
                 </button>
             </div>
 
