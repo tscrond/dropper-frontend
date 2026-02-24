@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import axios from 'axios';
-import { useConfigStore } from './config'; // ✅ use relative path to avoid import resolution issues
+import { useConfigStore } from './config';
 
 export const useAuthStore = defineStore("auth", {
   state: () => ({
@@ -8,7 +8,7 @@ export const useAuthStore = defineStore("auth", {
   }),
   actions: {
     async checkAuth() {
-        const configStore = useConfigStore(); // ✅ moved inside
+        const configStore = useConfigStore();
         const backendUrl = configStore.backendUrl;
 
         try {
@@ -22,7 +22,7 @@ export const useAuthStore = defineStore("auth", {
     },
 
     async logout(router) {
-      const configStore = useConfigStore(); // ✅ moved inside
+      const configStore = useConfigStore();
       const backendUrl = configStore.backendUrl;
 
       const logoutUrl = `${backendUrl}/auth/logout`;
