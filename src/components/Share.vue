@@ -156,6 +156,7 @@ async function shareFiles() {
             email: emailAddress.value,
             objects: fileNames,
             duration: `${timeNumber.value}${selectedDuration.value.code}`, // e.g. "24h"
+            send_email: true
           },
           {
             withCredentials: true,
